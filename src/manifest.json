@@ -1,0 +1,50 @@
+{
+  "manifest_version": 2,
+
+  "name": "Porkchat",
+  "description": "Greater functionality and usability in Stack Exchange Chat",
+  "version": "1.0.1",
+  "web_accessible_resources": [
+    "porkchat.js",
+    "inject.js",
+    "ponies.css",
+    "dark.css",
+    "global.css",
+    "icon_128.png",
+    "icon_white.png",
+    "options.html",
+    "info.html",
+    "imgs/*"
+  ],
+  "content_scripts": [
+        {
+          "matches": [
+            "http://chat.meta.stackexchange.com/rooms/*",
+            "http://chat.stackexchange.com/rooms/*",
+            "http://chat.stackoverflow.com/rooms/*"
+          ],
+          "exclude_matches":[
+            "http://chat.meta.stackexchange.com/rooms/info/*",
+            "http://chat.stackexchange.com/rooms/info/*",
+            "http://chat.stackoverflow.com/rooms/info/*",
+            "http://chat.meta.stackexchange.com/rooms",
+            "http://chat.stackexchange.com/rooms",
+            "http://chat.stackoverflow.com/rooms"
+          ],
+         "js": ["inject.js"],
+         "run_at" : "document_end"
+        }
+    ],
+    "icons": {
+          "16": "icon_16.png",
+          "48": "icon_48.png",
+          "128": "icon_128.png" },
+    "options_ui": {
+      "page": "options.html",
+      "chrome_style": true
+    },
+  "permissions": [
+    "tabs",
+    "storage"
+  ]
+}

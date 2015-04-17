@@ -1,0 +1,161 @@
+/* Stars */
+
+#pc_star_controls{
+    font-size:10px;
+    float: left;
+    margin: 3px 0 0 0;
+}
+
+/* Tab completion */
+
+#whoiscomplete{
+  text-align:left;
+}
+
+#whoiscomplete li.chosen{
+  box-shadow:0 0 2px rgba(0,0,0,0.8);
+  color:#FFF;
+  background-color:#000;
+  border-color:#000;
+}
+
+#tabcomplete li *{
+  vertical-align:middle;
+}
+
+#whoiscomplete li{
+  display:inline-block;
+  background-color:#FFF;
+  color:#000;
+  border:1px solid #888;
+  box-shadow:0 0 2px rgba(0,0,0,0.3);
+  cursor:pointer;
+  height:18px;
+  white-space:nowrap;
+  margin:5px 5px 0 0;
+  padding:2px 5px 2px 2px;
+}
+
+#whoiscomplete li img{
+  margin-right:3px;
+}
+
+/* Upload */
+
+#dropper
+{
+  display:none;
+  position:fixed;
+  left:0;
+  top:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.7);
+  z-index:9999;
+}
+
+#dropper h1
+{
+  text-align:center;
+  padding-top:200px;
+  position:absolute;
+  width:100%;
+  color:#FFF;
+  font-size:450%;
+  font-weight:700;
+  font-family:Helvetica;
+}
+
+/* burning */
+
+.burn .img.vote {
+  line-height: 7px;
+  margin-right: 5px;
+}
+
+/* hamstare */
+
+#hamstare{
+    height:23px;
+    text-align: center;
+    position: relative;
+    display: inline;
+}
+#stares{
+    position: absolute;
+    top: -203px;
+    left: -75px;
+    min-height: 170px;
+    width: 200px;
+    background: inherit;
+    border:1px solid #555;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+    border-radius: 3px;
+    cursor:default;
+    text-align: left;
+    opacity: 0;
+    transition:opacity 0.2s;
+    overflow-y:scroll;
+    padding-bottom:30px;
+    pointer-events:none;
+}
+#stares.shown{
+    opacity: 1;
+    transition:opacity 0.2s;
+    pointer-events:auto;
+}
+#stares button.button {
+  margin-left: 5px;
+  height: 23px;
+  display: block;
+  float: left;
+  max-width: 80px;
+  text-overflow: ellipsis;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 10px;
+  padding: 1px 4px;
+}
+#stares button.button.highlight{
+    max-width: none;
+}
+#stares button.button.remove{
+    color: #a00 !important;
+}
+#hamstare_controls{
+  position: absolute;
+  left: 0;
+  bottom: 0px;
+}
+#stares #hamstare_cancel.button.highlight{
+    display: none;
+}
+#pc_about_shade{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    display: none;
+}
+#pc_about{
+    width: 400px;
+  margin: 100px auto;
+  text-align: center;
+  background: #FFF;
+  border-radius: 4px;
+  box-shadow: 0 5px 10px #000;
+  border: 2px solid #999;
+  color: #333;
+  padding: 30px 20px 40px;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: lighter;
+}
+#pc_about img{
+  margin-bottom: 30px;
+}
