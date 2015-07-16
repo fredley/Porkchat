@@ -19,17 +19,17 @@
   "content_scripts": [
         {
           "matches": [
-            "http://chat.meta.stackexchange.com/rooms/*",
-            "http://chat.stackexchange.com/rooms/*",
-            "http://chat.stackoverflow.com/rooms/*"
+            "*://chat.meta.stackexchange.com/rooms/*",
+            "*://chat.stackexchange.com/rooms/*",
+            "*://chat.stackoverflow.com/rooms/*"
           ],
           "exclude_matches":[
-            "http://chat.meta.stackexchange.com/rooms/info/*",
-            "http://chat.stackexchange.com/rooms/info/*",
-            "http://chat.stackoverflow.com/rooms/info/*",
-            "http://chat.meta.stackexchange.com/rooms",
-            "http://chat.stackexchange.com/rooms",
-            "http://chat.stackoverflow.com/rooms"
+            "*://chat.meta.stackexchange.com/rooms/info/*",
+            "*://chat.stackexchange.com/rooms/info/*",
+            "*://chat.stackoverflow.com/rooms/info/*",
+            "*://chat.meta.stackexchange.com/rooms",
+            "*://chat.stackexchange.com/rooms",
+            "*://chat.stackoverflow.com/rooms"
           ],
          "js": ["inject.js"],
          "run_at" : "document_end"
