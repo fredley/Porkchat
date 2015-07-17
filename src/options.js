@@ -19,6 +19,7 @@ function restore_options() {
   for(var i=0; i<options.length; i++){
     default_opts[options[i]] = true;
   }
+  default_opts[1] = false; // fixed_width
   chrome.storage.sync.get(default_opts, function(items) {
     for(var i=0; i<options.length; i++){
       document.getElementById(options[i]).checked = items[options[i]];
