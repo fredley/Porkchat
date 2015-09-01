@@ -3,125 +3,126 @@
 <head>
   <title>Porkchat Options</title>
   <style>
-html.loading * {
-  -webkit-transition-delay: 0 !important;
-  -webkit-transition-duration: 0 !important;
-}
-
-body {
-  cursor: default;
-  margin: 0;
-  font-family:'Segoe UI', Tahoma, sans-serif;
-  font-size: 75%;
-  color:rgb(48, 57, 66)
-}
-
-label {
-  display: block;
-  margin: 15px;
-  font-weight: bold;
-  clear:both;
-}
-.button-row{
-  margin: 15px;
-  min-height: 40px;
-  clear:both;
-}
-.button-row button {
-  font-weight: bold;
-  font-size: 14px;
-  padding: 8px 20px;
-  float: left;
-  clear:both;
-}
-#status {
-  float: left;
-  margin: 10px;
-  color: #5A5;
-  opacity: 0;
-  transition: opacity 0.1s;
-}
-#status.shown {
-  opacity:1;
-  transition: opacity 0.1s;
-}
-.indent{
-  margin-left:30px;
-}
-label, p{
-  float: left;
-}
-p.info{
-  margin:15px;
-}
-</style>
+    html.loading * {
+      -webkit-transition-delay: 0 !important;
+      -webkit-transition-duration: 0 !important;
+    }
+    
+    body {
+      cursor: default;
+      margin: 0;
+      font-family:'Segoe UI', Tahoma, sans-serif;
+      font-size: 75%;
+      color:rgb(48, 57, 66)
+    }
+    
+    label {
+      display: block;
+      margin: 15px;
+      font-weight: bold;
+      clear:both;
+    }
+    .button-row{
+      margin: 15px;
+      min-height: 40px;
+      clear:both;
+    }
+    .button-row button {
+      font-weight: bold;
+      font-size: 14px;
+      padding: 8px 20px;
+      float: left;
+      clear:both;
+    }
+    #status {
+      float: left;
+      margin: 10px;
+      color: #5A5;
+      opacity: 0;
+      transition: opacity 0.1s;
+    }
+    #status.shown {
+      opacity:1;
+      transition: opacity 0.1s;
+    }
+    .indent{
+      margin-left:30px;
+    }
+    label, p{
+      float: left;
+    }
+    p.info{
+      margin:15px;
+    }
+  </style>
 </head>
-
 <body>
-
-<p class='info'><a href="" id="info-link" target="_blank">Click here for detailed descriptions of each component.</a></p>
+  <p class='info'>
+    <a href="" id="info-link" target="_blank">Click here for detailed descriptions of each component.</a>
+  </p>
 
   <label class='opt'>
-    <input type="checkbox" id="dark">
+    <input type="checkbox" id="dark" />
     Dark Theme
   </label>
   <p>Enable a dark theme for all chat windows</p>
 
   <div class='indent'>
-    <label class='opt'>
-      <input type="checkbox" id="fixed_width">
+    <label class='opt' />
+      <input type="checkbox" id="fixed_width" />
       Fixed Width Font
     </label>
     <p>Use a fixed-width font</p>
   </div>
 
   <label>
-    <input type="checkbox" id="friday">
+    <input type="checkbox" id="friday" />
     Friday Checking
   </label>
   <p>Highlight links to Friday by Rebecca Black.</p>
 
   <label>
-    <input type="checkbox" id="fire">
+    <input type="checkbox" id="fire" />
     Burning
   </label>
   <p>'Burn' icon next to Star/Flag/Reply for each message.</p>
 
   <label>
-    <input type="checkbox" id="stars">
+    <input type="checkbox" id="stars" />
     More Stars
   </label>
   <p>Collapse sidebar panels to show more stars.</p>
 
   <label>
-    <input type="checkbox" id="hamstare">
+    <input type="checkbox" id="hamstare" />
     HamStare
   </label>
   <p>A button for a configurable quick-text menu</p>
 
   <label>
-    <input type="checkbox" id="ponies">
+    <input type="checkbox" id="ponies" />
     PONIES
   </label>
   <p>Fade out images until they are moused over</p>
 
   <label>
-    <input type="checkbox" id="upload">
+    <input type="checkbox" id="upload" />
     Drag+drop image uploading
   </label>
   <p>drag+drop image uploading.</p>
 
   <label>
-    <input type="checkbox" id="topic">
+    <input type="checkbox" id="topic" />
     Topic diff
   </label>
   <p>Show a diff message when the room topic changes.</p>
 
   <label>
-    <input type="checkbox" id="mod">
+    <input type="checkbox" id="mod" />
     Mod stuff
   </label>
   <p>whois tab completion for TL</p>
+  
   <div class='button-row'>
     <button id="save">Save</button>
     <div id="status">Options saved</div>

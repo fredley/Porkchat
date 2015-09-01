@@ -19,16 +19,16 @@ var bindShortcutClick = function(elem){
 };
 
 var initHamStare = function(){
-    if(!window.pc_options.hamstare) return;
-    if(!('pc_stares' in localStorage)){
+    if (!window.pc_options.hamstare){ return };
+    if (!('pc_stares' in localStorage)){
         window.pc_buttons = ['ಠ_ಠ'];
         localStorage['pc_stares'] = JSON.stringify(pc_buttons);
-    }else{
+    } else {
         window.pc_buttons = JSON.parse(localStorage['pc_stares']);
     }
     var stares = $('<div id="stares"></div>');
     var button = $('<div class="button" id="hamstare">' + pc_buttons[0] + '</div>');
-    for(var i=0;i<pc_buttons.length;i++){
+    for(var i = 0; i < pc_buttons.length;i++){
         stares.append('<button class="button">'+ pc_buttons[i] +'</button>');
     }
     var button_row = $('<div id="hamstare_controls"></div>');
@@ -205,8 +205,7 @@ var initWhois = function() {
             return;
         }
         sugg_selected = -1;
-        var txt = $(this).val() + String.fromCharCode(e.keyCode);
-        txt = txt.toLowerCase();
+        var txt = $(this).val() + String.fromCharCode(e.keyCode).toLowerCase();
         if (e.keyCode === 8) txt = txt.substr(0, txt.length - 2);
         if (txt.substr(0, 6) === 'whois ' && txt.length > 6) {
             var lookup = txt.substr(6);
@@ -294,7 +293,7 @@ var burn = function(elem) {
 }
 
 function kindle(elem) {
-    if (!window.pc_options.fire) return;
+    if (!window.pc_options.fire){ return };
     //TODO internal image
     var meta = $('<span class="burn vote-count-container"><span class="img vote" title="Set fire to this message"><img src="http://tommedley.com/files/flame.png" title="BURN" alt="BURN" /></span><span class="times"></span></span>&nbsp;');
     elem.find('.meta').prepend(meta);
@@ -339,9 +338,7 @@ var jquery_paste = function($) {
                 clipboardData = event.clipboardData;
                 return Array.prototype.forEach.call(clipboardData.types, function(type, i) {
                     var file, reader;
-                    if (found) {
-                        return;
-                    }
+                    if (found) { return; }
                     if (type.match(options.matchType) || clipboardData.items[i].type.match(options.matchType)) {
                         file = clipboardData.items[i].getAsFile();
                         reader = new FileReader();
@@ -385,7 +382,7 @@ var initUpload = function() {
             fileDrag = false; // drags from outside the browser window don't call this
         },
         dragenter: function(e) {
-            if(fileDrag){
+            if (fileDrag){
                 console.log('dragenter');
                 $('#dropper').show();
                 e.preventDefault();
@@ -393,7 +390,7 @@ var initUpload = function() {
             }
         },
         dragover: function(e) {
-            if(fileDrag){
+            if (fileDrag){
                 console.log('dragover');
                 $('#dropper').show();
                 e.preventDefault();
@@ -483,35 +480,28 @@ $.yjax = (function(_ajax) {
 })($.ajax);
 
 // Check a link for potential Rebecca Black videos.
-function checkFriday(elem) {
-    if (!window.pc_options.friday) return;
+function checkFriday(elem, checkAgain) {
+    if (!window.pc_options.friday){ return };
     $.yjax({
         url: elem.attr('href'),
         type: 'GET',
         redirect: true,
         success: function(page) {
-            if (page.responseText.indexOf('Rebecca Black') > -1) {
+            page = page.responseText ? page.responseText : page;
+            if (page.toLowerCase().indexOf('rebecca black') > -1) {
                 elem.css('color', '#f00 !important');
                 elem.html('CAUTION: REBECCA BLACK LINK (' + elem.html() + ')');
             } else {
-                console.log('trying ' + elem.attr('href') + ' again');
-                $.yjax({
-                    url: elem.attr('href'),
-                    type: 'GET',
-                    success: function(page) {
-                        if (page.responseText.indexOf('Rebecca Black') > -1) {
-                            elem.css('color', '#f00 !important');
-                            elem.html('CAUTION: REBECCA BLACK LINK (' + elem.html() + ')');
-                        }
-                    },
-                    error: function() {
-                        console.log('fail');
-                    }
-                });
+                if (checkAgain){
+                    checkFriday(elem, false); 
+                    console.log('trying ' + elem.attr('href') + ' again');
+                } else {
+                    console.log('unable to retrieve ' + elem.attr('href'));
+                }
             }
         },
         error: function() {
-            console.log('fail');
+            console.log('unable to retrieve ' + elem.attr('href'));
         }
     });
 }
@@ -519,7 +509,7 @@ function checkFriday(elem) {
 // Logo
 
 var showLogo = function(){
-    var img_src = (pc_options.dark) ? pc_res.logo_white : pc_res.logo;
+    var img_src = (pc_options.dark ? pc_res.logo_white : pc_res.logo);
     var link = $('<a id="pc_logo" href="#" title="Porkchat is loaded"><img src="' + img_src + '" alt="Porkchat"></a>');
     $('#footer-logo').prepend(link);
     var about = $('<div id="pc_about_shade"><div id="pc_about"><img src="'+ pc_res.logo +'" alt="Porkchat"><p>Porkchat is a collection of scripts made by <a href="http://gaming.stackexchange.com/users/3610/fredley">fredley</a>.</p><p>To view scripts, and enable/disable them, go to the extensions page (chrome://extensions) and click Options by this extension.</p></div></div>');
@@ -539,7 +529,7 @@ function checkStarred() {
             $(this).addClass('checked');
             if ($(this).find('a').length > 0) {
                 $(this).find('a').each(function() {
-                    checkFriday($(this));
+                    checkFriday($(this), true);
                 });
             }
         }
@@ -554,7 +544,7 @@ function checkMessages() {
             checkTopic($(this));
             if ($(this).find('.content').first().find('a').length > 0) {
                 $(this).find('.content').first().find('a').each(function() {
-                    checkFriday($(this));
+                    checkFriday($(this), true);
                 });
             }
         }
@@ -573,7 +563,7 @@ $(document).ready(function() {
             initTopic();
             $('#chat .message').livequery(checkMessages);
             $('#starred-posts li').livequery(checkStarred);
-            if (window.pc_options.upload) initUpload();
+            if (window.pc_options.upload){ initUpload(); }
         }
     }, 500);
 });
