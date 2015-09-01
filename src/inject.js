@@ -1,11 +1,11 @@
 var options = ['dark', 'fixed_width', 'friday', 'fire', 'stars', 'hamstare', 'ponies', 'upload', 'topic', 'mod'];
 var res = {
-    'logo': chrome.extension.getURL('icon_128.png'),
-    'logo_white': chrome.extension.getURL('icon_white.png'),
-    'ver': '1'
+    logo: chrome.extension.getURL('icon_128.png'),
+    logo_white: chrome.extension.getURL('icon_white.png'),
+    ver: '1'
 };
 var enabled = {};
-for(var i=0; i<options.length; i++){
+for(var i = 0; i < options.length; i++){
     enabled[options[i]] = true;
 }
 function injectCSS(filename){
@@ -33,9 +33,11 @@ chrome.storage.sync.get(enabled, function(options) {
     if(options.ponies){
         injectCSS('ponies.css');
     }
+    
     if(options.dark){
         injectCSS('dark.css');
     }
+    
     if(options.fixed_width){
         injectCSS('fixed-width.css');
     }
