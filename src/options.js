@@ -2,7 +2,7 @@ var options = ['dark', 'fixed_width', 'friday', 'fire', 'stars', 'hamstare', 'po
 
 function save_options() {
   var new_opts = {};
-  for(var i=0; i<options.length; i++){
+  for(var i = 0; i < options.length; i++){
     new_opts[options[i]] = document.getElementById(options[i]).checked;
   }
   chrome.storage.sync.set(new_opts, function() {
@@ -16,16 +16,16 @@ function save_options() {
 
 function restore_options() {
   var default_opts = {};
-  for(var i=0; i<options.length; i++){
+  for(var i = 0; i < options.length; i++){
     default_opts[options[i]] = true;
   }
   default_opts['fixed_width'] = false;
   chrome.storage.sync.get(default_opts, function(items) {
-    for(var i=0; i<options.length; i++){
+    for(var i = 0; i < options.length; i++){
       document.getElementById(options[i]).checked = items[options[i]];
     }
   });
 }
 document.addEventListener('DOMContentLoaded', restore_options);
 document.getElementById('save').addEventListener('click', save_options);
-document.getElementById('info-link').href=chrome.extension.getURL('info.html');
+document.getElementById('info-link').href = chrome.extension.getURL('info.html');
