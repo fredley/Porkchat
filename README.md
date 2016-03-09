@@ -14,7 +14,7 @@ Porkchat is a Chrome extension that bundles together a lot of scripts I have wri
 * **HamStare (Quick text menu)** - Adds a menu for quick text shortcuts.
 * **Friday Link Highlighter** - Avoid Rebecca Black's hit single - links are highlighted, and this script checks redirects so can detect links behind shorteners.
 * **Message Burner** - Adds a button to 'burn' away messages you don't like, hiding them with an animation.
-* **Mod goodness** - whois autocompletion for TL.
+* **Mod goodness** - whois autocompletion for TL, edit buttons for message history, add write permissions for users directly.
 
 ##Why?
 

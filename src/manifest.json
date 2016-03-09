@@ -3,7 +3,7 @@
 
   "name": "Porkchat",
   "description": "Greater functionality and usability in Stack Exchange Chat",
-  "version": "1.0.1",
+  "version": "1.0.7",
   "web_accessible_resources": [
     "porkchat.js",
     "inject.js",
@@ -22,7 +22,10 @@
           "matches": [
             "*://chat.meta.stackexchange.com/rooms/*",
             "*://chat.stackexchange.com/rooms/*",
-            "*://chat.stackoverflow.com/rooms/*"
+            "*://chat.stackoverflow.com/rooms/*",
+            "*://chat.meta.stackexchange.com/messages/*/history",
+            "*://chat.stackexchange.com/messages/*/history",
+            "*://chat.stackoverflow.com/messages/*/history"
           ],
           "exclude_matches":[
             "*://chat.meta.stackexchange.com/rooms/info/*",

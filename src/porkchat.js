@@ -1,3 +1,175 @@
+//Livequery
+
+(function livequery($) {
+    /*! Copyright (c) 2010 Brandon Aaron (http://brandonaaron.net)
+     * Dual licensed under the MIT (MIT_LICENSE.txt)
+     * and GPL Version 2 (GPL_LICENSE.txt) licenses.
+     *
+     * Version: 1.1.1
+     * Requires jQuery 1.3+
+     * Docs: http://docs.jquery.com/Plugins/livequery
+     */
+ 
+    $.extend($.fn, {
+        livequery: function(type, fn, fn2) {
+            var self = this, q;
+            if ($.isFunction(type))
+                fn2 = fn, fn = type, type = undefined;
+            $.each( $.livequery.queries, function(i, query) {
+                if ( self.selector == query.selector && self.context == query.context &&
+                    type == query.type && (!fn || fn.$lqguid == query.fn.$lqguid) && (!fn2 || fn2.$lqguid == query.fn2.$lqguid) )
+ 
+                        return (q = query) && false;
+            });
+            q = q || new $.livequery(this.selector, this.context, type, fn, fn2);
+            q.stopped = false;
+            q.run();
+            return this;
+        },
+ 
+        expire: function(type, fn, fn2) {
+            var self = this;
+            if ($.isFunction(type))
+                fn2 = fn, fn = type, type = undefined;
+            $.each( $.livequery.queries, function(i, query) {
+                if ( self.selector == query.selector && self.context == query.context &&
+                    (!type || type == query.type) && (!fn || fn.$lqguid == query.fn.$lqguid) && (!fn2 || fn2.$lqguid == query.fn2.$lqguid) && !this.stopped )
+                        $.livequery.stop(query.id);
+            });
+            return this;
+        }
+    });
+ 
+    $.livequery = function(selector, context, type, fn, fn2) {
+        this.selector = selector;
+        this.context  = context;
+        this.type     = type;
+        this.fn       = fn;
+        this.fn2      = fn2;
+        this.elements = [];
+        this.stopped  = false;
+        this.id = $.livequery.queries.push(this)-1;
+        fn.$lqguid = fn.$lqguid || $.livequery.guid++;
+        if (fn2) fn2.$lqguid = fn2.$lqguid || $.livequery.guid++;
+        return this;
+    };
+ 
+    $.livequery.prototype = {
+        stop: function() {
+            var query = this;
+ 
+            if ( this.type )
+                this.elements.unbind(this.type, this.fn);
+            else if (this.fn2)
+                this.elements.each(function(i, el) {
+                    query.fn2.apply(el);
+                });
+            this.elements = [];
+            this.stopped = true;
+        },
+ 
+        run: function() {
+            if ( this.stopped ) return;
+            var query = this;
+ 
+            var oEls = this.elements,
+                els  = $(this.selector, this.context),
+                nEls = els.not(oEls);
+            this.elements = els;
+ 
+            if (this.type) {
+                nEls.bind(this.type, this.fn);
+                if (oEls.length > 0)
+                    $.each(oEls, function(i, el) {
+                        if ( $.inArray(el, els) < 0 )
+                            $.event.remove(el, query.type, query.fn);
+                    });
+            }
+            else {
+                nEls.each(function() {
+                    query.fn.apply(this);
+                });
+                if ( this.fn2 && oEls.length > 0 )
+                    $.each(oEls, function(i, el) {
+                        if ( $.inArray(el, els) < 0 )
+                            query.fn2.apply(el);
+                    });
+            }
+        }
+    };
+ 
+    $.extend($.livequery, {
+        guid: 0,
+        queries: [],
+        queue: [],
+        running: false,
+        timeout: null,
+ 
+        checkQueue: function() {
+            if ( $.livequery.running && $.livequery.queue.length ) {
+                var length = $.livequery.queue.length;
+                while ( length-- )
+                    $.livequery.queries[ $.livequery.queue.shift() ].run();
+            }
+        },
+ 
+        pause: function() {
+            $.livequery.running = false;
+        },
+ 
+        play: function() {
+            $.livequery.running = true;
+            $.livequery.run();
+        },
+ 
+        registerPlugin: function() {
+            $.each( arguments, function(i,n) {
+                if (!$.fn[n]) return;
+ 
+                var old = $.fn[n];
+ 
+                $.fn[n] = function() {
+                    var jQuery = $;
+                    var r = old.apply(this, arguments);
+ 
+                    jQuery.livequery.run();
+ 
+                    return r;
+                }
+            });
+        },
+ 
+        run: function(id) {
+            if (id != undefined) {
+                if ( $.inArray(id, $.livequery.queue) < 0 )
+                    $.livequery.queue.push( id );
+            }
+            else
+                $.each( $.livequery.queries, function(id) {
+                    if ( $.inArray(id, $.livequery.queue) < 0 )
+                        $.livequery.queue.push( id );
+                });
+ 
+            // Clear timeout if it already exists
+            if ($.livequery.timeout) clearTimeout($.livequery.timeout);
+            $.livequery.timeout = setTimeout($.livequery.checkQueue, 20);
+        },
+ 
+        stop: function(id) {
+            if (id != undefined)
+                $.livequery.queries[ id ].stop();
+            else
+                $.each( $.livequery.queries, function(id) {
+                    $.livequery.queries[ id ].stop();
+                });
+        }
+    });
+ 
+    $.livequery.registerPlugin('append', 'prepend', 'after', 'before', 'wrap', 'attr', 'removeAttr', 'addClass', 'removeClass', 'toggleClass', 'empty', 'remove', 'html');
+ 
+    $(function() { $.livequery.play(); });
+})(jQuery)
+
 // HamStare Shortcuts
 
 var bindShortcutClick = function(elem){
@@ -140,6 +312,45 @@ var checkTopic = function(elem) {
     }
 }
 
+// mod edit button for message history
+
+var initEditButton = function() {
+    var url_bits = location.href.split('/');
+    if(!window.pc_options.mod || url_bits[3] !== 'messages') return;
+    var button = $('<a href="'+location.href+'" class="button">Edit message</a>');
+    var postid = url_bits[4];
+    button.on('click',function(){
+        var text = prompt("New message text","(deleted)");
+        var data = {
+            text: text, 
+            fkey: localStorage['pc_fkey']
+        };
+        $.post('//'+url_bits[2]+'/messages/'+postid, data);
+    });
+    $('#content form').after(button);
+}
+
+// mod add user to room
+
+var checkPopup = function() {
+    if ($('.user-popup div a').length < 1){
+        setTimeout(function(){checkPopup();},100);
+    }
+    var link = $('<div><a href="#">give explicit write access</a></div>');
+    link.on('click',function(){
+        var userid = $('.user-popup a').first().attr('href').split('/')[2];
+        var data = {
+            fkey: fkey().fkey,
+            aclUserId: userid,
+            userAccess: "read-write"
+        }
+        console.log(data);
+        $.post("//"+location.href.split('/')[2]+"/rooms/setuseraccess/" + CHAT.CURRENT_ROOM_ID, data);
+        return false;
+    });
+    $('.user-popup div a:contains("room-owner")').parent().after(link);
+}
+
 // mod whois
 
 var initWhois = function() {
@@ -167,13 +378,11 @@ var initWhois = function() {
                         });
                     }
                 });
-                console.log(sites.length + ' sites loaded');
                 localStorage['whois_sites'] = JSON.stringify(sites);
             }
         });
     } else {
         sites = sites.concat(JSON.parse(localStorage['whois_sites']));
-        console.log(sites.length + ' sites loaded from local storage');
     }
 
     $("#tabcomplete").after('<div id="whoiscomplete"></div>');
@@ -378,12 +587,10 @@ var initUpload = function() {
     $('body').append('<div id="dropper"><h1>Upload image!</h1></div>');
     $('body').on({
         dragstart: function(e){
-            console.log('dragstart');
             fileDrag = false; // drags from outside the browser window don't call this
         },
         dragenter: function(e) {
             if (fileDrag){
-                console.log('dragenter');
                 $('#dropper').show();
                 e.preventDefault();
                 e.stopPropagation();
@@ -391,14 +598,12 @@ var initUpload = function() {
         },
         dragover: function(e) {
             if (fileDrag){
-                console.log('dragover');
                 $('#dropper').show();
                 e.preventDefault();
                 e.stopPropagation();
             }
         },
         dragend: function(e) {
-            console.log('dragend');
             fileDrag = true;
             $('#dropper').hide();
             e.preventDefault();
@@ -494,14 +699,8 @@ function checkFriday(elem, checkAgain) {
             } else {
                 if (checkAgain){
                     checkFriday(elem, false); 
-                    console.log('trying ' + elem.attr('href') + ' again');
-                } else {
-                    console.log('unable to retrieve ' + elem.attr('href'));
                 }
             }
-        },
-        error: function() {
-            console.log('unable to retrieve ' + elem.attr('href'));
         }
     });
 }
@@ -563,7 +762,9 @@ $(document).ready(function() {
             initTopic();
             $('#chat .message').livequery(checkMessages);
             $('#starred-posts li').livequery(checkStarred);
-            if (window.pc_options.upload){ initUpload(); }
+            if (window.pc_options.mod) $('.user-popup').livequery(checkPopup);
+            if (window.pc_options.upload) initUpload();
         }
     }, 500);
+    if (window.pc_options.mod) initEditButton();
 });
