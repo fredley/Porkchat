@@ -346,6 +346,7 @@ var checkPopup = function() {
         }
         console.log(data);
         $.post("//"+location.href.split('/')[2]+"/rooms/setuseraccess/" + CHAT.CURRENT_ROOM_ID, data);
+        $('.user-popup .btn-close').click();
         return false;
     });
     $('.user-popup div a:contains("room-owner")').parent().after(link);
