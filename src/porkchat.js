@@ -687,19 +687,25 @@ $.yjax = (function(_ajax) {
 
 // Check a link for potential Rebecca Black videos.
 function checkFriday(elem, checkAgain) {
-    if (!window.pc_options.friday){ return };
+    if (!window.pc_options.friday) { return; }
+    if (elem.hasClass('permalink')){ return; }
     $.yjax({
         url: elem.attr('href'),
         type: 'GET',
         redirect: true,
         success: function(page) {
             page = page.responseText ? page.responseText : page;
-            if (page.toLowerCase().indexOf('rebecca black') > -1) {
-                elem.css('color', '#f00 !important');
-                elem.html('CAUTION: REBECCA BLACK LINK (' + elem.html() + ')');
-            } else {
-                if (checkAgain){
-                    checkFriday(elem, false); 
+            for(var i = 0; i < window.friday_terms.length; i++) {
+                var term = $.trim(window.friday_terms[i]);
+                if (term == ""){ continue; }
+                console.log("Checking for " + term);
+                if (page.toLowerCase().indexOf(term) > -1) {
+                    elem.css('color', '#f00 !important');
+                    elem.html('CAUTION: '+term.toUpperCase()+' LINK (' + elem.html() + ')');
+                } else {
+                    if (checkAgain){
+                        checkFriday(elem, false); 
+                    }
                 }
             }
         }
@@ -754,6 +760,7 @@ function checkMessages() {
 $(document).ready(function() {
     var wait = setInterval(function() {
         if ($('.message').length > 0) {
+            window.friday_terms = window.pc_options['friday-terms'].split(',');
             clearInterval(wait);
             showLogo();
             checkMessages();

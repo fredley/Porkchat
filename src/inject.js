@@ -1,4 +1,7 @@
 var options = ['dark', 'fixed_width', 'friday', 'fire', 'stars', 'hamstare', 'ponies', 'upload', 'topic', 'mod'];
+var text_options = ['friday-terms',];
+var text_options_defaults = ['rebecca black,'];
+
 var res = {
     logo: chrome.extension.getURL('icon_128.png'),
     logo_white: chrome.extension.getURL('icon_white.png'),
@@ -6,7 +9,10 @@ var res = {
 };
 var enabled = {};
 for(var i = 0; i < options.length; i++){
-    enabled[options[i]] = true;
+    enabled[options[i]] = options[i] != 'fixed_width';
+}
+for(var i = 0; i < text_options.length; i++){
+    enabled[text_options[i]] = text_options_defaults[i];
 }
 function injectCSS(filename){
     var c = document.createElement('link');
