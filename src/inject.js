@@ -1,10 +1,11 @@
-var options = ['dark', 'fixed_width', 'friday', 'fire', 'stars', 'hamstare', 'ponies', 'upload', 'topic', 'mod'];
+var options = ['dark', 'fixed_width', 'friday', 'fire', 'stars', 'hamstare', 'ponies', 'upload', 'topic', 'mod', 'hover', 'emoji'];
 var text_options = ['friday-terms',];
 var text_options_defaults = ['rebecca black,'];
 
 var res = {
     logo: chrome.extension.getURL('icon_128.png'),
     logo_white: chrome.extension.getURL('icon_white.png'),
+    flame: chrome.extension.getURL('flame.png'),
     ver: '1'
 };
 var enabled = {};
@@ -31,7 +32,7 @@ chrome.storage.sync.get(enabled, function(options) {
 
     var o = document.createElement('script');
     o.type = 'text/javascript';
-    o.textContent = "window.pc_options=" + JSON.stringify(options) + ';window.pc_res=' + JSON.stringify(res) + ';';
+    o.textContent = "window.pc_options=" + JSON.stringify(options) + ';window.pc_res=' + JSON.stringify(res) + ';window.pc_version="' + chrome.runtime.getManifest().version + '";';
     document.body.appendChild(o);
 
     injectJS('porkchat.js');
@@ -39,11 +40,11 @@ chrome.storage.sync.get(enabled, function(options) {
     if(options.ponies){
         injectCSS('ponies.css');
     }
-    
+
     if(options.dark){
         injectCSS('dark.css');
     }
-    
+
     if(options.fixed_width){
         injectCSS('fixed-width.css');
     }

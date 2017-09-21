@@ -181,7 +181,6 @@ var checkPopup = function() {
             aclUserId: userid,
             userAccess: "read-write"
         }
-        console.log(data);
         $.post("//"+location.href.split('/')[2]+"/rooms/setuseraccess/" + CHAT.CURRENT_ROOM_ID, data);
         $('.user-popup .btn-close').click();
         return false;
@@ -341,12 +340,12 @@ var burn = function(elem) {
 
 function kindle(elem) {
     if (!window.pc_options.fire){ return };
-    //TODO internal image
-    var meta = $('<span class="burn vote-count-container"><span class="img vote" title="Set fire to this message"><img src="http://tommedley.com/files/flame.png" title="BURN" alt="BURN" /></span><span class="times"></span></span>&nbsp;');
+    if(elem.find('.burn.vote-count-container').length > 0){ return };
+    var meta = $('<span class="burn vote-count-container"><span class="img vote" title="Set fire to this message"><img src="' + pc_res.flame + '" title="BURN" alt="BURN" /></span><span class="times"></span></span>&nbsp;');
     elem.find('.meta').prepend(meta);
     meta.on('click', function(e) {
         e.preventDefault();
-        burn(elem);
+        burn($(this).parent().parent());
     });
 }
 
@@ -518,7 +517,6 @@ $.yjax = (function(_ajax) {
 
         }
         return _ajax.apply(this, arguments);
-
     };
 })($.ajax);
 
@@ -531,11 +529,11 @@ function checkFriday(elem, checkAgain) {
         type: 'GET',
         redirect: true,
         success: function(page) {
-            page = page.responseText ? page.responseText : page;
+            page = page.hasOwnProperty('responseText') ? page.responseText : page;
             for(var i = 0; i < window.friday_terms.length; i++) {
                 var term = $.trim(window.friday_terms[i]);
                 if (term == ""){ continue; }
-                if (page.toLowerCase().indexOf(term) > -1) {
+                if (page && page.toLowerCase().indexOf(term) > -1) {
                     elem.css('color', '#f00 !important');
                     elem.html('CAUTION: '+term.toUpperCase()+' LINK (' + elem.html() + ')');
                 } else {
@@ -548,13 +546,28 @@ function checkFriday(elem, checkAgain) {
     });
 }
 
+function addImageHover(el){
+    if (!window.pc_options.hover){ return };
+    const href = el.attr('href');
+    let force_img = el.parent().clone().children().remove().end().text().trim()[0] === '!';
+    if(force_img || ['jpeg', 'jpg', 'gif', 'png'].map(function(ext){
+        return href.endsWith(ext);
+    }).reduce(function(a,b){ return a || b})){
+        el.hover(function(){
+            $('body').append($('<div>').addClass('img-hover').append($('<img>').attr('src', href)));
+        }, function(){
+            $('.img-hover').remove();
+        })
+    }
+}
+
 // Logo
 
 var showLogo = function(){
     var img_src = (pc_options.dark ? pc_res.logo_white : pc_res.logo);
     var link = $('<a id="pc_logo" href="#" title="Porkchat is loaded"><img src="' + img_src + '" alt="Porkchat"></a>');
     $('#footer-logo').prepend(link);
-    var about = $('<div id="pc_about_shade"><div id="pc_about"><img src="'+ pc_res.logo +'" alt="Porkchat"><p>Porkchat is a collection of scripts made by <a href="http://gaming.stackexchange.com/users/3610/fredley">fredley</a>.</p><p>To view scripts, and enable/disable them, go to the extensions page (chrome://extensions) and click Options by this extension.</p></div></div>');
+    var about = $('<div id="pc_about_shade"><div id="pc_about"><img src="'+ pc_res.logo +'" alt="Porkchat"><p>Porkchat is a collection of scripts made by <a href="http://gaming.stackexchange.com/users/3610/fredley">fredley</a>.</p><p>To view scripts, and enable/disable them, go to the extensions page (chrome://extensions) and click Options by this extension.</p><p class="about-muted">Version: ' + window.pc_version + '</p></div></div>');
     $('body').append(about);
     link.on('click',function(e){
         about.fadeIn('fast');
@@ -572,6 +585,7 @@ function checkStarred() {
             if ($(this).find('a').length > 0) {
                 $(this).find('a').each(function() {
                     checkFriday($(this), true);
+                    addImageHover($(this));
                 });
             }
         }
@@ -579,8 +593,18 @@ function checkStarred() {
 }
 
 function checkEmoji(el){
-    if(isOnlyEmoji(el.text())){
-        el.css({'font-size':'36px', 'transition': 'font-size 0.2s'})
+    if (!window.pc_options.emoji){ return };
+    let text = el.find('.content').text().trim();
+    let is_reply = false;
+    if(el.find('.reply-info').length > 0){
+        text = text.split(' ').slice(1).join(' ');
+        is_reply = true;
+    }
+    if(text.length > 0 && isOnlyEmoji(text)){
+        if(is_reply){
+            el.find('.content').text(text);
+        }
+        el.addClass('emoji');
     }
 }
 

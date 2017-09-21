@@ -159,3 +159,35 @@
 #pc_about img{
   margin-bottom: 30px;
 }
+.message.emoji {
+  font-size: 36px;
+  transition: font-size 0.2s;
+}
+.message.emoji .popup{
+  line-height: 1.5em;
+}
+div.message.emoji .meta{
+  bottom:20px;
+}
+div.message.emoji a.action-link .img.menu{
+  margin-top: 5px;
+  display: block;
+}
+.img-hover{
+  position: fixed;
+  top: 50px;
+  left: 50px;
+  max-width: 50%;
+  z-index: 999;
+  background: #222;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 50px #000;
+}
+.img-hover img{
+  max-width: 100%;
+  max-height: 100%;
+}
+p.about-muted {
+  opacity: 0.5;
+}

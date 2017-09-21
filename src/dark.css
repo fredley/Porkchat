@@ -160,13 +160,13 @@ ul#my-rooms>li.activity-3{
 }
 .vote-count-container.stars .img,
 .vote-count-container.stars.user-star .img{
-  background-image:url('http://tommedley.com/files/sprites.png') !important;
+  background-image:url('chrome-extension://__MSG_@@extension_id__/sprites.png') !important;
 }
 body #container a.button{
   background-color:#444;
 }
 .sprite{
-  background-image:url('http://tommedley.com/files/sprites.png') !important;
+  background-image:url('chrome-extension://__MSG_@@extension_id__/sprites.png') !important;
 }
 .monologue .tiny-signature .username{
   height:10px !important;
