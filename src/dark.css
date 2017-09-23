@@ -195,3 +195,7 @@ body #container a.button{
 body #container .button.highlight {
   color: #FFA500 !important;
 }
+
+.ob-tweet .ob-status-meta .ob-tweet-info{
+  color: #ccc !important;
+}

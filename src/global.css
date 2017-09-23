@@ -191,3 +191,48 @@ div.message.emoji a.action-link .img.menu{
 p.about-muted {
   opacity: 0.5;
 }
+.ob-tweet {
+  max-height: 400px;
+  overflow-y: auto;
+}
+.ob-profile-image a img{
+  width: 36px;
+  height: 36px;
+  border-radius: 30px;
+}
+.twitter-gall{
+  clear: both;
+}
+.rainbow {
+  background: linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
+  background-size: 1800% 1800%;
+  animation: rainbow 10s ease infinite;
+}
+@keyframes rainbow {
+  0%  {
+    color: #dd00f3;
+    background-position:0% 82%
+  }
+  10% { color: #dd00f3 }
+  20% { color: #2b1de8 }
+  30% { color: #d35400 }
+  40% { color: #1ddde8 }
+  50% {
+    color: #1de840;
+    background-position:100% 19%
+  }
+  60% { color: #e3e81d }
+  70% { color: #e8b71d }
+  80% { color: #e81d1d }
+  90% { color: #ff2400 }
+  100%{
+    color: #dd00f3;
+    background-position:0% 82%;
+  }
+}
+.spin {
+  animation: spin 9s linear infinite;
+}
+@keyframes spin {
+  100% { transform:rotate(360deg) }
+}

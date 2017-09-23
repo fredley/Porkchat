@@ -615,6 +615,7 @@ function checkMessages() {
             kindle($(this));
             checkTopic($(this));
             checkEmoji($(this));
+            checkTwitter($(this));
             if ($(this).find('.content').first().find('a').length > 0) {
                 $(this).find('.content').first().find('a').each(function() {
                     checkFriday($(this), true);
@@ -624,6 +625,61 @@ function checkMessages() {
     });
 }
 
+function checkTwitter(el){
+    if (!window.pc_options.twitter){ console.log("no"); return };
+    if(el.find('.ob-tweet').length > 0){
+        el.parent().find('.timestamp').css({
+            position: 'absolute',
+            right: '10px'
+        })
+        el.find('a').each(function(){
+            const href = $(this).attr('href')
+            if(href.startsWith('https://t.co/')){
+                const link = $(this);
+                $.yjax({
+                    url: href,
+                    type: 'GET',
+                    redirect: true,
+                    success: function(page){
+                        $.yjax({
+                            url: page.responseText.split('location.replace("')[1].split('")&lt;')[0].replace(/\\\//g, '/'),
+                            type: 'GET',
+                            redirect: false,
+                            success: function(actual_page){
+                                const image_urls = actual_page.responseText
+                                    .split('data-image-url="')
+                                    .slice(1, 4)
+                                    .map((s) => {
+                                        return s.split('"')[0]
+                                    })
+                                if(image_urls.length > 1){
+                                    const div = $('<div>')
+                                        .addClass('twitter-gall')
+                                        .addClass('twitter-gall-' + image_urls.length)
+                                    image_urls.map((image_url) => {
+                                        div.append(
+                                            $('<img>')
+                                            .attr('src', image_url)
+                                            .addClass('user-image')
+                                        )
+                                    })
+                                    link.html(div)
+                                }else{
+                                    link.html(
+                                        $('<img>')
+                                        .attr('src', image_urls[0])
+                                        .addClass('user-image')
+                                    );
+                                }
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    }
+}
+
 function isOnlyEmoji(str) {
     str = str.trim()
     // https://stackoverflow.com/a/39652525/319618
@@ -631,7 +687,24 @@ function isOnlyEmoji(str) {
     return str.trim().replace(r, '').length === 0
 }
 
+function rainbow() {
+    $('*:visible').addClass('rainbow');
+    $('img:visible').addClass('spin');
+    // no going back
+}
+
 $(document).ready(function() {
+    let k_code = '';
+    const target = '38384040373937396665';
+    $('body').on('keydown', (e) => {
+        // literally log every keystroke
+        k_code += String(e.which);
+        if (target === k_code){
+            rainbow();
+        } else if (!target.startsWith(k_code)){
+            k_code = String(e.which)
+        }
+    })
     var wait = setInterval(function() {
         if ($('.message').length > 0) {
             window.friday_terms = window.pc_options['friday-terms'].split(',');

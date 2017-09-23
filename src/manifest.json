@@ -3,7 +3,7 @@
 
   "name": "Porkchat",
   "description": "Greater functionality and usability in Stack Exchange Chat",
-  "version": "1.0.13",
+  "version": "1.0.15",
   "web_accessible_resources": [
     "porkchat.js",
     "inject.js",
