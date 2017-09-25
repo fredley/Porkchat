@@ -8,11 +8,11 @@
 
 /* Tab completion */
 
-#whoiscomplete{
+.pc_complete{
   text-align:left;
 }
 
-#whoiscomplete li.chosen{
+.pc_complete li.chosen{
   box-shadow:0 0 2px rgba(0,0,0,0.8);
   color:#FFF;
   background-color:#000;
@@ -23,7 +23,7 @@
   vertical-align:middle;
 }
 
-#whoiscomplete li{
+.pc_complete li{
   display:inline-block;
   background-color:#FFF;
   color:#000;
@@ -36,7 +36,7 @@
   padding:2px 5px 2px 2px;
 }
 
-#whoiscomplete li img{
+.pc_complete li img{
   margin-right:3px;
 }
 
@@ -194,6 +194,9 @@ p.about-muted {
 .ob-tweet {
   max-height: 400px;
   overflow-y: auto;
+}
+.ob-tweet img.user-image{
+  display: block;
 }
 .ob-profile-image a img{
   width: 36px;
