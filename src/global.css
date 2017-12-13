@@ -203,6 +203,9 @@ p.about-muted {
   height: 36px;
   border-radius: 30px;
 }
+.ob-status-text{
+  white-space: pre-wrap;
+}
 .twitter-gall{
   clear: both;
 }

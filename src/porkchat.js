@@ -679,7 +679,6 @@ function checkMessages() {
             kindle($(this));
             checkTopic($(this));
             checkEmoji($(this));
-            checkTwitter($(this));
             if ($(this).find('.content').first().find('a').length > 0) {
                 $(this).find('.content').first().find('a').each(function() {
                     checkFriday($(this), true);
@@ -695,62 +694,6 @@ function checkMessages() {
             }
         }
     });
-}
-
-function checkTwitter(el){
-    if (!window.pc_options.twitter){ return };
-    if(el.find('.ob-tweet').length > 0){
-        el.parent().find('.timestamp').css({
-            position: 'absolute',
-            right: '10px'
-        })
-        el.find('a').each(function(){
-            const href = $(this).attr('href')
-            if(href.startsWith('https://t.co/')){
-                const link = $(this);
-                $.yjax({
-                    url: href,
-                    type: 'GET',
-                    redirect: true,
-                    success: function(page){
-                        $.yjax({
-                            url: page.responseText.split('location.replace("')[1].split('")&lt;')[0].replace(/\\\//g, '/'),
-                            type: 'GET',
-                            redirect: false,
-                            success: function(actual_page){
-                                let image_urls = actual_page.responseText
-                                    .split('tweet-stats-container')[0]
-                                    .split('data-image-url="')
-                                    .slice(1, 4)
-                                    .map((s) => {
-                                        return s.split('"')[0]
-                                    })
-                                if(image_urls.length > 1){
-                                    const div = $('<div>')
-                                        .addClass('twitter-gall')
-                                        .addClass('twitter-gall-' + image_urls.length)
-                                    image_urls.map((image_url) => {
-                                        div.append(
-                                            $('<img>')
-                                            .attr('src', image_url)
-                                            .addClass('user-image')
-                                        )
-                                    })
-                                    link.html(div)
-                                }else if(image_urls.length == 1){
-                                    link.html(
-                                        $('<img>')
-                                        .attr('src', image_urls[0])
-                                        .addClass('user-image')
-                                    );
-                                }
-                            }
-                        })
-                    }
-                })
-            }
-        })
-    }
 }
 
 function isOnlyEmoji(str) {

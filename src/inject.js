@@ -1,4 +1,4 @@
-var options = ['dark', 'fixed_width', 'friday', 'fire', 'stars', 'hamstare', 'ponies', 'upload', 'topic', 'mod', 'hover', 'emoji', 'twitter', 'emoji_replace'];
+var options = ['dark', 'fixed_width', 'friday', 'fire', 'stars', 'hamstare', 'ponies', 'upload', 'topic', 'mod', 'hover', 'emoji', 'emoji_replace'];
 var text_options = ['friday-terms',];
 var text_options_defaults = ['rebecca black,'];
 
